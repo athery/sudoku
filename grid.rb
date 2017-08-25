@@ -60,8 +60,11 @@ class Grid
   end
 
   def cell_solution(l,c)
-    values = [*1..9] - taken_values(line(l)) - taken_values(column(c)) - taken_values(square(l,c))
-    return values.size == 1 ? values.first : false
+    return (values = possible_cell_values(l,c)).size == 1 ? values.first : false
+  end
+
+  def possible_cell_values(l,c)
+    [*1..9] - taken_values(line(l)) - taken_values(column(c)) - taken_values(square(l,c))
   end
 
   def taken_values(array)

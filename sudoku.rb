@@ -7,7 +7,7 @@
 require('./grid.rb')
 
 # Main program
-grid = Grid.new(File.read('grille.txt'))
+grid = Grid.new(File.read('grid_samples/medium1.txt'))
 
 puts ' '
 puts "Grille de départ :"
