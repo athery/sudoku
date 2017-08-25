@@ -2,7 +2,7 @@ class Grid
   attr :data
 
   def initialize(raw_text_grid)
-    @data = raw_text_grid.split().map {|line| line.split('').map{|cell| cell == '.' ? '.' : cell.to_i}}
+    reset(raw_text_grid)
   end
 
   def solve!
@@ -18,25 +18,22 @@ class Grid
           end
         end
       end
-      if !changed_something_this_round
-        return false
-      end
+      return false if !changed_something_this_round
     end
     return true
   end
 
   def solved?
-    solved = true
-    data.each do |line|
-      if line.include? '.'
-        return false
-      end
-    end
+    data.each {|line| return false if line.include? '.'}
     return true
   end
 
   def print
     data.each{|line| puts line.join(' ')}
+  end
+
+  def reset(raw_text_grid)
+    @data = raw_text_grid.split().map {|line| line.split('').map{|cell| cell == '.' ? '.' : cell.to_i}}
   end
 
   private
@@ -54,8 +51,8 @@ class Grid
   end
 
   def square(l,c)
-    l_start = (l == 0 ? 0 : (3*(l/(data.size/3))))
-    c_start = (c == 0 ? 0 : (3*(c/(data.size/3))))
+    l_start = (l == 0 ? 0 : (3*(l/3)))
+    c_start = (c == 0 ? 0 : (3*(c/3)))
     return data[l_start..(l_start + 2)].map{|line| line[c_start..(c_start + 2)]}.flatten
   end
 
