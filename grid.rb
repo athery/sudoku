@@ -2,7 +2,7 @@ class Grid
   attr :data
 
   def initialize(raw_text_grid)
-    @data = raw_text_grid.split().map {|line| line.split('').map{|cell| cell == '.' ? '.' : cell.to_i}}
+    reset(raw_text_grid)
   end
 
   def solve!
@@ -30,6 +30,10 @@ class Grid
 
   def print
     data.each{|line| puts line.join(' ')}
+  end
+
+  def reset(raw_text_grid)
+    @data = raw_text_grid.split().map {|line| line.split('').map{|cell| cell == '.' ? '.' : cell.to_i}}
   end
 
   private
