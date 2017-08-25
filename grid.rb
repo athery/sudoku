@@ -26,7 +26,6 @@ class Grid
   end
 
   def solved?
-    solved = true
     data.each do |line|
       if line.include? '.'
         return false
