@@ -7,18 +7,18 @@ class Grid
 
   def solve!
     while !solved?
-      changed_something_this_round = false
+      changed_unit_this_round = false
       data.each_with_index do |line, l|
         unless array_solved? line
           line.each_with_index do |value, c|
-            if (value == '.') && (value = cell_solution(l,c))
-              set_cell_value(l, c, value)
-              changed_something_this_round = true
+            if (value == '.') && (value = unit_solution(l,c))
+              set_unit_value(l, c, value)
+              changed_unit_this_round = true
             end
           end
         end
       end
-      return false if !changed_something_this_round
+      return false if !changed_unit_this_round
     end
     return true
   end
@@ -33,7 +33,7 @@ class Grid
   end
 
   def reset(raw_text_grid)
-    @data = raw_text_grid.split().map {|line| line.split('').map{|cell| cell == '.' ? '.' : cell.to_i}}
+    @data = raw_text_grid.split().map {|line| line.split('').map{|unit| unit == '.' ? '.' : unit.to_i}}
   end
 
   private
@@ -50,25 +50,25 @@ class Grid
     data.map{|line| line[c]}
   end
 
-  def square(l,c)
-    l_start = (l == 0 ? 0 : (3*(l/3)))
-    c_start = (c == 0 ? 0 : (3*(c/3)))
+  def region(l,c)
+    l_start = 3*(l/3)
+    c_start = 3*(c/3)
     return data[l_start..(l_start + 2)].map{|line| line[c_start..(c_start + 2)]}.flatten
   end
 
-  def cell_solution(l,c)
-    return (values = possible_cell_values(l,c)).size == 1 ? values.first : false
+  def unit_solution(l,c)
+    return (values = possible_unit_values(l,c)).size == 1 ? values.first : false
   end
 
-  def possible_cell_values(l,c)
-    [*1..9] - taken_values(line(l)) - taken_values(column(c)) - taken_values(square(l,c))
+  def possible_unit_values(l,c)
+    [*1..9] - taken_values(line(l)) - taken_values(column(c)) - taken_values(region(l,c))
   end
 
   def taken_values(array)
     array - ['.']
   end
 
-  def set_cell_value(l, c, value)
+  def set_unit_value(l, c, value)
     data[l][c] = value
   end
 
