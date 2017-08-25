@@ -51,8 +51,8 @@ class Grid
   end
 
   def square(l,c)
-    l_start = (l == 0 ? 0 : (3*(l/(data.size/3))))
-    c_start = (c == 0 ? 0 : (3*(c/(data.size/3))))
+    l_start = (l == 0 ? 0 : (3*(l/3)))
+    c_start = (c == 0 ? 0 : (3*(c/3)))
     return data[l_start..(l_start + 2)].map{|line| line[c_start..(c_start + 2)]}.flatten
   end
 
