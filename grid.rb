@@ -18,19 +18,13 @@ class Grid
           end
         end
       end
-      if !changed_something_this_round
-        return false
-      end
+      return false if !changed_something_this_round
     end
     return true
   end
 
   def solved?
-    data.each do |line|
-      if line.include? '.'
-        return false
-      end
-    end
+    data.each {|line| return false if line.include? '.'}
     return true
   end
 
