@@ -29,7 +29,11 @@ class Grid
   end
 
   def print
-    data.each{|line| puts line.join(' ')}
+    data.each{|line| puts line.join('')}
+  end
+
+  def to_s
+    data.map{|line| line.join('')}.join("\n")
   end
 
   def reset(raw_text_grid)
