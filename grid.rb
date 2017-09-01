@@ -6,13 +6,12 @@ class Grid
   end
 
   def solve!
-    #while !fully_solved?
-    5.times do
+    while !fully_solved? do
       changed_unit_this_round = false
       data.each_with_index do |line, l|
         unless array_solved? line
-          line.each_with_index do |unit, c|
-            if (!unit_solved?(unit)) && (unit != (new_values = possible_unit_values(l,c)))
+          line.each_with_index do |u, c|
+            if (!unit_solved?(u)) && (u != (new_values = possible_unit_values(l,c)))
               set_unit_values(l, c, new_values)
               changed_unit_this_round = true
             end
@@ -20,8 +19,6 @@ class Grid
         end
       end
       return false if !changed_unit_this_round
-      p '============'
-      print()
     end
     return true
   end
@@ -40,7 +37,7 @@ class Grid
   end
 
   def reset(raw_text_grid)
-    @data = raw_text_grid.split().map {|line| line.split('').map{|unit| unit == '.' ? [] : [unit.to_i]}}
+    @data = raw_text_grid.split().map {|line| line.split('').map{|u| u == '.' ? [] : [u.to_i]}}
   end
 
 #  private
@@ -70,19 +67,24 @@ class Grid
   end
 
   def possible_unit_values(l,c)
-    [*1..9] - taken_values(line(l)) - taken_values(column(c)) - taken_values(region(l,c))
+    return unit(l,c) if unit_solved?(unit(l,c))
+    [*1..9] - taken_values(region(l,c)) - taken_values(line(l)) - taken_values(column(c))
   end
 
   def taken_values(array)
-    array.flatten
+    array.select{|v| v.size == 1}.flatten
   end
 
   def set_unit_values(l, c, values)
     data[l][c] = values
   end
 
-  def unit_solved?(unit)
-    unit.size == 1
+  def unit_solved?(u)
+    u.size == 1
+  end
+
+  def unit(l,c)
+    data[l][c]
   end
 
 end

@@ -8,11 +8,11 @@ describe 'overall solving algorithm' do
     check_grid_solving('easy')
   end
   it 'should solve medium grids' do
-    #check_grid_solving('medium1')
-    #check_grid_solving('medium2')
+    check_grid_solving('medium1')
+    check_grid_solving('medium2')
   end
   it 'should not solve a hard grid' do
-    #check_grid_solving('hard')
+    check_grid_solving('hard')
   end
 end
 
@@ -41,7 +41,7 @@ describe 'a new grid'do
   end
 
   it 'should know what values are taken in a given line/column/region' do
-    @grid.taken_values(@grid.column(7)).must_equal([9,2])
+    @grid.taken_values([[2], [], [9, 3, 6], [7]]).must_equal([2,7])
     @grid.taken_values(@grid.line(1)).must_equal([1, 9, 8, 6])
     @grid.taken_values(@grid.region(0, 8)).must_equal([2, 9, 6])
   end
@@ -55,7 +55,7 @@ end
 def check_grid_solving(name)
   grid = new_grid(name)
   grid.solve!
-  #grid.to_s.must_equal solution_grid(name).to_s
+  grid.to_s.must_equal solution_grid(name).to_s
 end
 
 def new_grid(name)
