@@ -7,18 +7,9 @@ class Grid
 
   def solve!
     while !fully_solved? do
-      changed_unit_this_round = false
-      data.each_with_index do |line, l|
-        unless array_solved? line
-          line.each_with_index do |u, c|
-            if (!unit_solved?(u)) && (u != (new_values = possible_unit_values(l,c)))
-              set_unit_values(l, c, new_values)
-              changed_unit_this_round = true
-            end
-          end
-        end
-      end
-      return false if !changed_unit_this_round
+      nb_updated_this_round = 0
+      nb_updated_this_round += simple_solve_scan
+      return false if (nb_updated_this_round == 0)
     end
     return true
   end
@@ -41,6 +32,20 @@ class Grid
   end
 
 #  private
+  def simple_solve_scan
+    nb_updated = 0
+    data.each_with_index do |line, l|
+      unless array_solved? line
+        line.each_with_index do |u, c|
+          if (!unit_solved?(u)) && (u != (new_values = possible_unit_values(l,c)))
+            set_unit_values(l, c, new_values)
+            nb_updated += 1
+          end
+        end
+      end
+    end
+    return nb_updated
+  end
 
   def printable_array(array)
     array.map{|u| unit_solved?(u) ? u.first : '.'}

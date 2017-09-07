@@ -12,7 +12,7 @@ describe 'overall solving algorithm' do
     check_grid_solving('medium2')
   end
   it 'should not solve a hard grid' do
-    check_grid_solving('hard')
+    check_grid_solving('hard', false)
   end
 end
 
@@ -29,7 +29,7 @@ describe 'a new grid'do
     @grid.column(7).must_equal([[9],[],[],[],[],[],[],[],[2]])
   end
 
-  it 'shoould know when its solved partially or fully' do
+  it 'should know when its solved partially or fully' do
     @grid.fully_solved?.must_equal(false)
     @solution.fully_solved?.must_equal(true)
     @grid.array_solved?(@grid.line(1)).must_equal(false)
@@ -52,9 +52,10 @@ describe 'a new grid'do
 
 end
 
-def check_grid_solving(name)
+def check_grid_solving(name, solved=true)
   grid = new_grid(name)
   grid.solve!
+  grid.fully_solved?.must_equal solved
   grid.to_s.must_equal solution_grid(name).to_s
 end
 
