@@ -9,6 +9,7 @@ class Grid
     while !fully_solved? do
       nb_updated_this_round = 0
       nb_updated_this_round += simple_solve_scan
+      nb_updated_this_round += deductive_solve_scan
       return false if (nb_updated_this_round == 0)
     end
     return true
@@ -47,6 +48,10 @@ class Grid
     return nb_updated
   end
 
+  def deductive_solve_scan
+    0
+  end
+
   def printable_array(array)
     array.map{|u| unit_solved?(u) ? u.first : '.'}
   end
@@ -82,6 +87,29 @@ class Grid
 
   def set_unit_values(l, c, values)
     data[l][c] = values
+    if unit_solved?(values)
+      remove_values_from_line(l, values)
+      remove_values_from_column(c, values)
+      remove_values_from_region(l, c, values)
+    end
+  end
+
+  def set_line(line_number, line_array)
+    data[line_number] = line_array
+  end
+
+  def set_column(column_number, column_array)
+    data.each_with_index{|line, i| line[column_number] = column_array[i]}
+  end
+
+  def set_region(l, c, region_array)
+    l_start = 3*(l/3)
+    c_start = 3*(c/3)
+    data[l_start..(l_start + 2)].each_with_index do |line,i|
+      line[c_start..(c_start + 2)].each_with_index do |cell,j|
+        data[l_start + i][c_start + j] = region_array[i*3+j]
+      end
+    end
   end
 
   def unit_solved?(u)
@@ -90,6 +118,22 @@ class Grid
 
   def unit(l,c)
     data[l][c]
+  end
+
+  def remove_values_from_line(l, values)
+    remove_values_from_array! values, data[l]
+  end
+
+  def remove_values_from_column(c, values)
+    set_column c, remove_values_from_array!(values, column(c))
+  end
+
+  def remove_values_from_region(l, c, values)
+    set_region l, c, remove_values_from_array!(values, region(l,c))
+  end
+
+  def remove_values_from_array!(values, array)
+    array.map!{ |cell| cell == values ? cell : cell - values }
   end
 
 end
