@@ -87,11 +87,6 @@ class Grid
 
   def set_unit_values(l, c, values)
     data[l][c] = values
-    if unit_solved?(values)
-      remove_values_from_line(l, values)
-      remove_values_from_column(c, values)
-      remove_values_from_region(l, c, values)
-    end
   end
 
   def set_line(line_number, line_array)
@@ -118,22 +113,6 @@ class Grid
 
   def unit(l,c)
     data[l][c]
-  end
-
-  def remove_values_from_line(l, values)
-    remove_values_from_array! values, data[l]
-  end
-
-  def remove_values_from_column(c, values)
-    set_column c, remove_values_from_array!(values, column(c))
-  end
-
-  def remove_values_from_region(l, c, values)
-    set_region l, c, remove_values_from_array!(values, region(l,c))
-  end
-
-  def remove_values_from_array!(values, array)
-    array.map!{ |cell| cell == values ? cell : cell - values }
   end
 
 end
