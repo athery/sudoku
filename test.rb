@@ -67,18 +67,6 @@ describe 'a new easy grid'do
     @grid.possible_unit_values(2,0).must_equal([2,4,9])
   end
 
-  it 'sets the value of cell and if only one value is left, it removes this value from all cells on the same line, column, region' do
-    @grid.set_line(1, [[1,2],[3,4],[5,6],[7],[8],[1,3],[2,4,5],[9],[1,3]])
-    @grid.set_column(2, [[1,2],[5,6],[2,4],[7],[8],[1,3],[2,4,5],[9],[1,3]])
-    @grid.set_region(1, 2, [[5,8],[],[1,2],[1,2],[3,4],[5,6],[],[],[1,3]])
-
-    @grid.set_unit_values(1, 2, [5])
-
-    @grid.line(1).must_equal([[1,2],[3,4],[5],[7],[8],[1,3],[2,4],[9],[1,3]])
-    @grid.column(2).must_equal([[1,2],[5],[1,3],[7],[8],[1,3],[2,4],[9],[1,3]])
-    @grid.region(1, 2).must_equal([[8],[],[1,2],[1,2],[3,4],[5],[],[],[1,3]])
-  end
-
 end
 
 describe 'difficult grid solving' do
